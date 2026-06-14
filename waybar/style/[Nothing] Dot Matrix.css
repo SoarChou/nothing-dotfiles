@@ -1,0 +1,268 @@
+/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+/* Nothing - 仿 Nothing Phone 设计风格 by Claude
+   字体: Ndot 57 (英数点阵) + Fusion Pixel (中文点阵) + Nerd Font Mono (图标)
+   特征: 镂空透明背景 / 统一药丸圆角 / 黑白单色 / Nothing 红强调 / 毛玻璃 */
+
+/* ===== Nothing 调色板 ===== */
+@define-color glass     rgba(18, 18, 18, 0.22);   /* 半透明黑玻璃 (越小越透) */
+@define-color glassDim  rgba(18, 18, 18, 0.12);
+@define-color glassLit  rgba(255, 255, 255, 0.10);/* 玻璃高光 */
+@define-color stroke    rgba(255, 255, 255, 0.18);/* 白描边 */
+@define-color strokeLit rgba(255, 255, 255, 0.65);/* 亮白描边 */
+@define-color foreground #ffffff;
+@define-color dim        rgba(255, 255, 255, 0.45);
+@define-color accent     #d71921;                 /* Nothing 红 */
+@define-color black      rgba(0, 0, 0, 0.55);
+
+/* ===== 统一几何参数 (改这里就能整体调整,不要在各模块单独改) =====
+   圆角 @radius=16px / 模块高度由 min-height 锁定 / 间距统一 */
+
+/* ===== 全局: 唯一的字体栈 =====
+   Doto Nerd Font Black(英数点阵+图标,Black 自带最粗字形) → Fusion Pixel(中文点阵)
+   关键: 用 Black 字重的字形 + font-weight:normal,而不是靠 bold 合成。
+   这样英数天生粗(真字形),中文 Fusion 走 Regular 不被伪加粗糊掉,彻底无 embolden 问题。 */
+* {
+  font-family: "Doto Nerd Font Black", "Doto Nerd Font", "Fusion Pixel 12px Prop zh_hans", monospace;
+  font-weight: normal;
+  min-height: 0;
+  font-size: 15px;
+  letter-spacing: 0;
+}
+
+/* 中文不糊靠 fontconfig 禁用 Fusion Pixel 伪粗体(见 ~/.config/fontconfig/fonts.conf),
+   故全局可放心用 bold: 英数 Doto 真粗 + 中文 Fusion 原始点阵不糊。无需逐模块设 normal。 */
+
+/* 镂空: 整条栏透明,模块作为独立玻璃岛浮起 */
+window#waybar {
+  background: transparent;
+  color: @foreground;
+  transition-property: background-color;
+  transition-duration: 0.4s;
+}
+
+tooltip {
+  /* Hyprland 0.53 无法对 layer popup 单独 blur, 半透明会透字发花。
+     故用接近不透明的深色保证文字清晰, 仅留一丝透气 + 亮白描边维持风格 */
+  background: rgba(16, 16, 16, 0.92);
+  border: 1px solid @strokeLit;
+  border-radius: 16px;
+}
+tooltip label {
+  color: @foreground;
+  padding: 2px;
+}
+
+/* ===== 统一玻璃岛: workspaces 容器 + 所有通用模块 共用同一组几何 ===== */
+#workspaces,
+#backlight,
+#backlight-slider,
+#battery,
+#bluetooth,
+#clock,
+#cpu,
+#disk,
+#idle_inhibitor,
+#keyboard-state,
+#memory,
+#mode,
+#mpris,
+#network,
+#power-profiles-daemon,
+#pulseaudio,
+#pulseaudio-slider,
+#taskbar,
+#temperature,
+#tray,
+#window,
+#wireplumber,
+#custom-backlight,
+#custom-nightlight,
+#custom-browser,
+#custom-cava_mviz,
+#custom-cycle_wall,
+#custom-dot_update,
+#custom-file_manager,
+#custom-keybinds,
+#custom-keyboard,
+#custom-light_dark,
+#custom-lock,
+#custom-hint,
+#custom-hypridle,
+#custom-menu,
+#custom-playerctl,
+#custom-power_vertical,
+#custom-power,
+#custom-quit,
+#custom-reboot,
+#custom-settings,
+#custom-spotify,
+#custom-swaync,
+#custom-tty,
+#custom-updater,
+#custom-hyprpicker,
+#custom-weather {
+  color: @foreground;
+  background-color: @glass;
+  /* 顶部高光渐变 = 玻璃反光 */
+  background-image: linear-gradient(to bottom, @glassLit, rgba(255,255,255,0.0) 45%, rgba(0,0,0,0.06));
+  padding: 0 12px;
+  margin: 5px 3px;
+  /* 统一固定高度: 锁死所有岛屿等高,内容变化不跳栏 */
+  min-height: 28px;
+  border: 1px solid @stroke;
+  border-radius: 16px;
+  /* 统一液态玻璃边框: 顶亮边 + 底暗边 + 内发光 */
+  box-shadow:
+    inset 0 1px 1px 0 rgba(255,255,255,0.45),
+    inset 0 -1px 1px 0 rgba(0,0,0,0.35),
+    inset 0 0 6px 0 rgba(255,255,255,0.08);
+  /* 平滑过渡: hover/状态变化时颜色边框柔和渐变,不硬切 */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* workspaces 容器内边距单独收窄 (因为里面还有 button) */
+#workspaces {
+  padding: 0 4px;
+}
+
+/* 音乐/频谱条: GTK 不动画化 min-width(宽度展开做不到),只做 opacity 淡入 + 颜色过渡 */
+#mpris,
+#custom-cava_mviz {
+  transition: opacity 0.45s ease,
+              background-color 0.3s ease,
+              border-color 0.3s ease;
+}
+
+/* ===== workspaces / taskbar 按钮: 与岛屿同语言的小药丸 ===== */
+#workspaces button,
+#taskbar button {
+  color: @dim;
+  background: transparent;
+  padding: 0 8px;
+  margin: 3px 2px;
+  min-height: 22px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  box-shadow: none;
+  /* hover/active 切换平滑过渡 */
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+#workspaces button:hover,
+#taskbar button:hover {
+  color: @foreground;
+  background: @glassDim;
+  border: 1px solid @stroke;
+}
+
+#workspaces button.active,
+#taskbar button.active {
+  color: @foreground;
+  background: transparent;
+  border: 1px solid @strokeLit;
+}
+
+#workspaces button.urgent,
+#taskbar button.urgent {
+  color: @foreground;
+  background: @accent;
+  border: 1px solid @accent;
+}
+
+#submap {
+  color: @accent;
+}
+
+/* 时钟: 唯一的字号例外 (Nothing 招牌大数字),字体栈仍走全局 */
+#clock {
+  font-size: 18px;
+}
+
+#tray {
+  background: @glass;
+}
+
+/* ===== 电源类: Nothing 红强调 ===== */
+#custom-power,
+#custom-power_vertical,
+#custom-quit,
+#custom-reboot,
+#custom-lock {
+  color: @accent;
+}
+#custom-power:hover,
+#custom-power_vertical:hover,
+#custom-quit:hover,
+#custom-reboot:hover,
+#custom-lock:hover {
+  color: @foreground;
+  background: @accent;
+  border: 1px solid @accent;
+}
+
+/* ===== 告警: 唯一彩色 = Nothing 红 ===== */
+#battery.warning,
+#disk.warning,
+#memory.warning,
+#cpu.warning,
+#temperature.warning {
+  color: @accent;
+}
+
+#battery.critical:not(.charging),
+#disk.critical,
+#memory.critical,
+#cpu.critical,
+#temperature.critical {
+  color: @foreground;
+  background: @accent;
+  border: 1px solid @accent;
+  animation-name: blink;
+  animation-duration: 1.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes blink {
+  to {
+    background: @glass;
+    color: @accent;
+  }
+}
+
+#battery.charging {
+  color: @foreground;
+}
+
+/* ===== indicators ===== */
+#custom-hypridle.notactive,
+#idle_inhibitor.activated {
+  color: @accent;
+}
+
+/* ===== sliders: 圆角细滑条 ===== */
+#backlight-slider slider,
+#pulseaudio-slider slider {
+  min-width: 10px;
+  min-height: 10px;
+  border-radius: 50%;
+  background: @foreground;
+  border: none;
+  box-shadow: none;
+}
+
+#backlight-slider trough,
+#pulseaudio-slider trough {
+  min-width: 80px;
+  min-height: 5px;
+  border-radius: 16px;
+  background: @stroke;
+}
+
+#backlight-slider highlight,
+#pulseaudio-slider highlight {
+  min-height: 5px;
+  border-radius: 16px;
+  background: @foreground;
+}

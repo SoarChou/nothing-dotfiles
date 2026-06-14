@@ -1,0 +1,82 @@
+//* ---- 💫 https://github.com/JaKooLit 💫 ---- *//
+/* Waybar Modules Extras - 用户覆盖 (Nothing 主题用) */
+/* 此文件优先级最高,更新 dots 不会丢失。覆盖默认模块设置。 */
+
+{
+
+// 窗口标题: 加长,避免 Ndot 宽字体下早早截断成 "..."
+"hyprland/window": {
+	"format": "{}",
+	"max-length": 45,
+	"separate-outputs": true,
+	"icon": false,
+},
+
+// 音乐: 播放时也显示歌名详情 (原配置播放只显图标)。{dynamic}=艺术家+标题
+"mpris": {
+	"interval": 5,
+	"format": "{player_icon} {dynamic}",
+	"format-paused": "{status_icon} <i>{dynamic}</i>",
+	"dynamic-len": 40,
+	"dynamic-order": ["title", "artist"],
+	"on-click-middle": "playerctl play-pause",
+	"on-click": "playerctl previous",
+	"on-click-right": "playerctl next",
+	"tooltip-format": "{status_icon} {dynamic}\n左键: 上一首  中键: 播放/暂停  右键: 下一首",
+	"player-icons": {
+		"default": "",
+		"chromium": "",
+		"firefox": "",
+		"spotify": "",
+	},
+	"status-icons": {
+		"playing": "",
+		"paused": "",
+		"stopped": "",
+	},
+},
+
+// 亮度: 图标 + 百分比 (图标与数字间三个空格,统一间距)
+"backlight": {
+	"interval": 2,
+	"format": "{icon} {percent}%",
+	"format-icons": ["󰃞", "󰃟", "󰃠"],
+	"tooltip-format": "亮度 {percent}%",
+	"on-scroll-up": "brightnessctl set 5%+",
+	"on-scroll-down": "brightnessctl set 5%-",
+},
+
+// 电池: 图标与数字间三个空格,统一间距
+"battery": {
+	"full-at": 100,
+	"states": {
+		"warning": 30,
+		"critical": 15,
+	},
+	"format": "{icon} {capacity}%",
+	"format-charging": "󰂄 {capacity}%",
+	"format-plugged": "󰚥 {capacity}%",
+	"format-full": "{icon} {capacity}%",
+	"format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+	"tooltip-format": "{capacity}%",
+},
+
+// 时钟: 去掉秒 (秒级跳动 + 非等宽字 = 一直抖),只留时:分。开头钟表图标
+"clock": {
+	"interval": 10,
+	"format": "{:%H:%M}",
+	"format-alt": "{:%Y-%m-%d  %A}",
+	"tooltip-format": "<tt><small>{calendar}</small></tt>",
+	"calendar": {
+		"mode": "month",
+		"mode-mon-col": 3,
+		"on-scroll": 1,
+	},
+	"actions": {
+		"on-click-right": "mode",
+		"on-scroll-up": "shift_up",
+		"on-scroll-down": "shift_down",
+	},
+},
+
+}

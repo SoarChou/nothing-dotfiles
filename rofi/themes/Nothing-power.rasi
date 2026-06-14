@@ -1,0 +1,75 @@
+/* Nothing 风格 rofi 电源菜单主题 — 居中横排大图标按钮 */
+
+@import "~/.config/rofi/themes/Nothing-colors.rasi"
+
+* {
+    text-color:        @foreground;
+    border-color:      @border-col;
+    font:              "Doto Nerd Font Black 16";
+}
+
+window {
+    transparency:      "real";
+    location:          center;
+    anchor:            center;
+    width:             720px;
+    border:            0px;
+    background-color:  transparent;
+    padding:           0px;
+}
+
+mainbox {
+    orientation:       vertical;
+    children:          [ "inputbar", "listview" ];
+    background-color:  @background;
+    border:            1px;
+    border-color:      @border-col;
+    border-radius:     20px;
+    padding:           24px;
+    spacing:           18px;
+}
+
+inputbar {
+    background-color:  transparent;
+    children:          [ "prompt" ];
+    halign:            center;
+}
+
+prompt {
+    background-color:  transparent;
+    text-color:        @foreground;
+    font:              "Doto Nerd Font Black 20";
+}
+
+listview {
+    columns:           3;
+    lines:             2;
+    cycle:             true;
+    scrollbar:         "none";
+    spacing:           14px;
+    background-color:  transparent;
+}
+
+element {
+    orientation:       vertical;
+    padding:           22px 10px;
+    border-radius:     16px;
+    background-color:  @background-alt;
+    border:            1px;
+    border-color:      @border-col;
+    children:          [ "element-text" ];
+}
+
+element-text {
+    background-color:  transparent;
+    text-color:        inherit;
+    horizontal-align:  0.5;
+    vertical-align:    0.5;
+    font:              "Doto Nerd Font Black 15";
+}
+
+element selected.normal {
+    background-color:  @selected;
+    text-color:        #ffffff;
+    border-color:      #d71921;
+}

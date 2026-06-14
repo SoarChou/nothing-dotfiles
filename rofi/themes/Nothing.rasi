@@ -1,0 +1,155 @@
+/* ---- Nothing Phone 风格 rofi 主题 ---- */
+/* 玻璃半透明 + Doto 点阵字 + 黑白单色 + Nothing 红 + 药丸圆角 */
+
+configuration {
+    modi:                       "drun,run,filebrowser";
+    show-icons:                 true;
+    display-drun:               "  应用";
+    display-run:                "  命令";
+    display-filebrowser:        "  文件";
+    display-window:             "  窗口";
+    drun-display-format:        "{name}";
+    hover-select:               true;
+    me-select-entry:            "MouseSecondary";
+    me-accept-entry:            "MousePrimary";
+    window-format:              "{w} · {c} · {t}";
+}
+
+@import "~/.config/rofi/themes/Nothing-colors.rasi"
+
+* {
+    text-color:        @foreground;
+    text-selected:     #ffffff;
+    border-color:      @border-col;
+    font:              "Doto Nerd Font Black 14";
+}
+
+window {
+    enabled:           true;
+    transparency:      "real";
+    cursor:            "default";
+    spacing:           0px;
+    border:            1px;
+    border-color:      @border-col;
+    border-radius:     16px;
+    location:          center;
+    anchor:            center;
+    width:             40%;
+    background-color:  @background;
+}
+
+mainbox {
+    enabled:           true;
+    orientation:       vertical;
+    children:          [ "inputbar", "listbox" ];
+    background-color:  transparent;
+    padding:           10px;
+}
+
+inputbar {
+    enabled:           true;
+    padding:           12px 16px;
+    margin:            0px 0px 10px 0px;
+    background-color:  @background-alt;
+    border:            1px;
+    border-color:      @border-col;
+    border-radius:     14px;
+    orientation:       horizontal;
+    children:          [ "prompt", "entry" ];
+}
+
+prompt {
+    enabled:           true;
+    background-color:  transparent;
+    text-color:        @selected;
+    padding:           0px 10px 0px 0px;
+}
+
+entry {
+    enabled:           true;
+    background-color:  transparent;
+    text-color:        @foreground;
+    placeholder:       "搜索...";
+    placeholder-color: rgba(255,255,255,0.4);
+}
+
+listbox {
+    orientation:       vertical;
+    children:          [ "listview" ];
+    background-color:  transparent;
+}
+
+listview {
+    enabled:           true;
+    columns:           1;
+    lines:             8;
+    cycle:             true;
+    dynamic:           true;
+    scrollbar:         "none";
+    spacing:           4px;
+    background-color:  transparent;
+}
+
+element {
+    enabled:           true;
+    spacing:           10px;
+    padding:           8px 12px;
+    border-radius:     12px;
+    background-color:  transparent;
+    text-color:        @foreground;
+}
+
+element normal.normal { background-color: transparent;  text-color: @foreground; }
+element selected.normal {
+    background-color:  @selected;
+    text-color:        #ffffff;
+}
+element alternate.normal { background-color: transparent; text-color: @foreground; }
+
+element-icon {
+    size:              24px;
+    background-color:  transparent;
+    cursor:            inherit;
+}
+
+element-text {
+    background-color:  transparent;
+    text-color:        inherit;
+    highlight:         inherit;
+    cursor:            inherit;
+    vertical-align:    0.5;
+    horizontal-align:  0.0;
+    font:              "Doto Nerd Font Black 13";
+}
+
+/* message/textbox: 子菜单(keybinds/edit)的顶部提示条, 不补会用默认白底 */
+message {
+    background-color:  transparent;
+    margin:            0px 0px 10px 0px;
+    padding:           0px;
+    border:            0px;
+}
+
+textbox {
+    background-color:  @background-alt;
+    text-color:        @foreground;
+    border:            1px;
+    border-color:      @border-col;
+    border-radius:     14px;
+    padding:           10px 14px;
+}
+
+error-message {
+    background-color:  @background;
+    text-color:        @foreground;
+    border-radius:     16px;
+    padding:           12px;
+}
+
+scrollbar {
+    width:             4px;
+    handle-width:      4px;
+    handle-color:      @border-col;
+    background-color:  transparent;
+    border-radius:     8px;
+}

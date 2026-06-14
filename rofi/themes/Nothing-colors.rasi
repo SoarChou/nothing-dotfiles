@@ -1,0 +1,10 @@
+/* Nothing 风格 rofi 配色 — 黑白单色 + Nothing 红 + 玻璃 */
+* {
+    background:        rgba(18, 18, 18, 0.55);
+    background-alt:    rgba(18, 18, 18, 0.35);
+    foreground:        #ffffff;
+    selected:          #d71921;
+    active:            #d71921;
+    urgent:            #d71921;
+    border-col:        rgba(255, 255, 255, 0.18);
+}

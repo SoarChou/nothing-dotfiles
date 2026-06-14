@@ -1,0 +1,81 @@
+/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+// ### Nothing - macOS 风格布局 (顶部菜单栏 + 底部 Dock) ### //
+
+[{
+// ========== 顶栏 = macOS 菜单栏 ==========
+"include": [
+  "$HOME/.config/waybar/UserModules",
+  "$HOME/.config/waybar/Modules",
+  "$HOME/.config/waybar/ModulesWorkspaces",
+  "$HOME/.config/waybar/ModulesCustom",
+  "$HOME/.config/waybar/ModulesGroups",
+  ],
+"layer": "top",
+"exclusive": true,
+"passthrough": false,
+"position": "top",
+"spacing": 4,
+"fixed-center": true,
+"ipc": true,
+"margin-top": 4,
+"margin-left": 8,
+"margin-right": 8,
+
+// 左侧: 菜单图标 (≈ 苹果 logo) + 当前窗口标题 + 音乐 + 频谱条
+"modules-left": [
+		"custom/menu",
+		"hyprland/window",
+	],
+
+// 中间留空 (macOS 菜单栏中间不放东西)
+"modules-center": [
+		"custom/weather",
+		"clock",
+		"mpris",
+		"custom/cava_mviz",
+	],
+
+// 右侧: 状态图标群 + 时钟在最右角 (macOS 控制中心区)
+"modules-right": [
+		"tray",
+		"group/audio",
+		"backlight",
+		"battery",
+		"group/notify",
+		"custom/power",
+	],
+},
+
+{
+// ========== 底栏 = macOS Dock ==========
+"include": [
+  "$HOME/.config/waybar/UserModules",
+  "$HOME/.config/waybar/Modules",
+  "$HOME/.config/waybar/ModulesWorkspaces",
+  "$HOME/.config/waybar/ModulesCustom",
+  "$HOME/.config/waybar/ModulesGroups",
+  ],
+"layer": "top",
+"exclusive": true,
+"passthrough": false,
+"position": "bottom",
+"spacing": 4,
+"fixed-center": true,
+"ipc": true,
+"margin-bottom": 4,
+"margin-left": 8,
+"margin-right": 8,
+
+"modules-left": [
+		"group/app_drawer",
+	],
+
+// Dock 居中: 应用抽屉 + 工作区
+"modules-center": [
+		"hyprland/workspaces#rw",
+	],
+
+"modules-right": [
+		"idle_inhibitor",
+	],
+}]
