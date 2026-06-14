@@ -73,6 +73,15 @@ python3 ~/.config/waybar/layout-editor/editor.py   # 或 Super+Shift+B
 - 从托盘拖模块到栏里；栏内方框下的 `‹ ›` 箭头微调顺序；拖回托盘移除
 - `Enter` 保存并重载，`Esc` 退出。保存前自动备份 `config.bak`
 
+## 🩹 玻璃质感调节器
+
+```bash
+python3 ~/.config/waybar/layout-editor/glass-tuner.py   # 或 Super+Alt+G
+```
+
+- GTK 滑块面板，拖动调玻璃浓度 / 描边强度（CSS 的 `@glass`/`@stroke` alpha）
+- 滑块松手即应用（改 CSS + 重启 waybar），`Esc` 关闭
+
 ## ⚠️ 已知坑（血泪经验）
 
 - **`letter-spacing` 必须为 0** — 非 0 会干扰 Pango 渲染图标 PUA 字形，显示成 `...`。
