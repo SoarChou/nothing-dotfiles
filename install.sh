@@ -148,6 +148,7 @@ install_rofi() {
 install_scripts() {
   info "安装电源菜单 + 音乐脚本..."
   mkdir -p "$HOME/.config/hypr/UserScripts"
+  [[ -f "$REPO/scripts/WaybarCava.sh" ]] && mkdir -p "$HOME/.config/hypr/scripts" && cp "$REPO/scripts/WaybarCava.sh" "$HOME/.config/hypr/scripts/" && chmod +x "$HOME/.config/hypr/scripts/WaybarCava.sh"
   for sc in NothingPower.sh NothingPlayer.sh; do
     [[ -f "$REPO/scripts/$sc" ]] && cp "$REPO/scripts/$sc" "$HOME/.config/hypr/UserScripts/$sc" && chmod +x "$HOME/.config/hypr/UserScripts/$sc"
   done
