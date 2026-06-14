@@ -186,6 +186,13 @@ label, button { color:#ffffff; }
          min-height:14px; min-width:17px; font-size:10px; }
 .arrow:hover { background:#d71921; color:#ffffff; }
 
+/* 普通按钮(返回等): 深色玻璃, 不用 GTK 默认白底 */
+button { background:rgba(18,18,18,0.55); color:#ffffff;
+         border:1px solid rgba(255,255,255,0.18);
+         border-radius:14px; padding:8px 18px; }
+button:hover { background:rgba(255,255,255,0.12);
+               border-color:rgba(255,255,255,0.4); }
+
 .savebtn { background:#d71921; color:#ffffff;
            border:1px solid rgba(255,255,255,0.3);
            border-radius:14px; padding:8px 20px; }
