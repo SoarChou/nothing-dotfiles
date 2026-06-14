@@ -14,11 +14,14 @@ from gi.repository import Gtk, Gdk, GLib
 HOME = os.path.expanduser("~")
 CSS = os.path.realpath(os.path.join(HOME, ".config/waybar/style.css"))
 
-# 可调变量: 名 -> (正则锁定 rgba 的 RGB 部分, 当前 alpha)
+# 可调变量: 名 -> (标签, rgb, 范围下限, 上限, 默认值)
 VARS = {
-    "glass":  {"label": "玻璃浓度 (越大越实/越不透)", "rgb": "18, 18, 18"},
-    "glassDim": {"label": "次级玻璃浓度", "rgb": "18, 18, 18"},
-    "stroke": {"label": "描边强度", "rgb": "255, 255, 255"},
+    "glass":  {"label": "玻璃浓度 (越大越实/越不透)", "rgb": "18, 18, 18",
+               "min": 0.10, "max": 0.45, "default": 0.22},
+    "glassDim": {"label": "次级玻璃浓度", "rgb": "18, 18, 18",
+               "min": 0.05, "max": 0.30, "default": 0.12},
+    "stroke": {"label": "描边强度", "rgb": "255, 255, 255",
+               "min": 0.08, "max": 0.40, "default": 0.18},
 }
 
 
@@ -78,7 +81,10 @@ class Tuner(Gtk.Window):
             lab = Gtk.Label(label=info["label"], xalign=0)
             lab.get_style_context().add_class("sub")
             root.pack_start(lab, False, False, 0)
-            adj = Gtk.Adjustment(value=read_alpha(name), lower=0.0, upper=1.0,
+            cur = read_alpha(name)
+            # clamp 初值到合理范围
+            cur = max(info["min"], min(info["max"], cur))
+            adj = Gtk.Adjustment(value=cur, lower=info["min"], upper=info["max"],
                                  step_increment=0.01, page_increment=0.05)
             sc = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=adj)
             sc.set_digits(2)
@@ -93,11 +99,21 @@ class Tuner(Gtk.Window):
         root.pack_start(self.status, False, False, 0)
 
         bbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        reset = Gtk.Button(label="恢复默认")
+        reset.connect("clicked", self.on_reset)
+        bbox.pack_start(reset, False, False, 0)
         close = Gtk.Button(label="关闭 (Esc)")
         close.connect("clicked", lambda b: Gtk.main_quit())
         bbox.pack_end(close, False, False, 0)
         root.pack_start(bbox, False, False, 0)
         self.connect("key-press-event", self.on_key)
+
+    def on_reset(self, btn):
+        for name, info in VARS.items():
+            self.scales[name].set_value(info["default"])
+            write_alpha(name, info["default"])
+        self.status.set_text("已恢复默认 (0.22/0.12/0.18), 重载中...")
+        GLib.timeout_add(50, lambda: (reload_waybar(), False)[1])
 
     def on_release(self, widget, ev, name):
         alpha = widget.get_value()
